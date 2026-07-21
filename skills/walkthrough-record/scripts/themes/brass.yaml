@@ -1,0 +1,15 @@
+# Brass — smoked espresso glass, burnished brass accents
+cursor: { size: 22, fill: "#1A1510", stroke: "#D4A84B", ripple: "rgba(212,168,75,0.42)" }
+card:
+  background: "rgba(22,18,14,0.92)"
+  border: "rgba(212,168,75,0.30)"
+  text: "#FFF8F0"
+  accent: "#D4A84B"
+  radius: 14
+  width: 300
+  heroWidth: 420
+  font: '"Fraunces", Georgia, serif'
+camera: { easing: "cubic-bezier(0.22,1.12,0.28,1)", defaultScale: 1.18, zoomDuration: 0.95, settle: 0.18 }
+movement: { speed: 0.98, arc: 0.28, minDuration: 0.38, maxDuration: 1.15 }
+typing: { delay: 30 }
+timing: { preClick: 0.22, postClick: 0.38, cardDefault: 3.3, heroDefault: 4.8 }

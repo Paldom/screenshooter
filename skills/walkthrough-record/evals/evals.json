@@ -1,0 +1,59 @@
+{
+  "skill": "walkthrough-record",
+  "cases": [
+    { "type": "should_trigger", "prompt": "record a walkthrough video of my web app" },
+    { "type": "should_trigger", "prompt": "make a polished product tour video of our dashboard with smooth zooms" },
+    { "type": "should_trigger", "prompt": "turn tour.yaml into an mp4" },
+    { "type": "should_trigger", "prompt": "render the demo walkthrough as a gif for the README" },
+    { "type": "should_trigger", "prompt": "can u capture a screen recroding of the app with the moving cursor thing" },
+    { "type": "should_trigger", "prompt": "the recorder died with 'zoom target not found' — get the recording working" },
+    { "type": "should_trigger", "prompt": "export our product tour in mp4 and gif formats" },
+    { "type": "should_trigger", "prompt": "create a tutorial video of the signup flow on staging.example.com" },
+    { "type": "should_trigger", "prompt": "generate a demo video of the app for the landing page" },
+    { "type": "should_not_trigger", "prompt": "write a storyboard for our onboarding tour" },
+    { "type": "should_not_trigger", "prompt": "plan the beats and card copy for the walkthrough scenario" },
+    { "type": "should_not_trigger", "prompt": "take a screenshot of the homepage" },
+    { "type": "should_not_trigger", "prompt": "record my screen while I present on zoom" },
+    { "type": "should_not_trigger", "prompt": "compress this mp4 I recorded on my phone" },
+    { "type": "should_not_trigger", "prompt": "write playwright e2e tests for the checkout flow" },
+    { "type": "should_not_trigger", "prompt": "add screen recording as a feature to our webrtc app" },
+    { "type": "should_not_trigger", "prompt": "make an animated gif from these five png frames" },
+    { "type": "should_not_trigger", "prompt": "why does my youtube upload look low quality" },
+    {
+      "type": "quality",
+      "prompt": "Record the bundled demo walkthrough and give me the mp4 and gif",
+      "expected_behavior": [
+        "runs scripts/setup.sh first (or verifies deps) instead of ad-hoc npm/playwright commands",
+        "records assets/demo/orbit-tour.yaml with scripts/record.mjs and reports the exact output file paths",
+        "verifies the result (ffprobe dimensions/duration or extracted frames) before declaring success"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "Record a walkthrough of https://app.internal.test from my scenario at scenarios/tour.yaml, webm only for now",
+      "expected_behavior": [
+        "runs the recorder against the user's scenario with --webm-only rather than exporting mp4/gif",
+        "surfaces validation errors verbatim if the scenario fails the pre-flight validator instead of editing silently",
+        "does not commit outputs or scenario changes"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "The zoom in my recording pushes into the wrong area and my sticky header looks glued to the content — fix it",
+      "expected_behavior": [
+        "consults references/troubleshooting.md and explains the DOM-zoom ceiling (body transform makes fixed/sticky elements zoom with the app)",
+        "offers concrete fixes: adjust zoom target/scale, remove zoom beats for that section, or record zoom-free",
+        "does not claim the tool supports compositor-side zoom (that is roadmap, not shipped)"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "The README gif came out 16 MB — get it under 10 MB without ruining it",
+      "expected_behavior": [
+        "applies the gif budget levers from references/export-profiles.md: trim to a shorter beat (start/duration), reduce width, lower fps, or reduce colors — in that order of preference",
+        "re-exports from the existing webm master instead of re-recording",
+        "reports the final file size and settings used"
+      ]
+    }
+  ]
+}

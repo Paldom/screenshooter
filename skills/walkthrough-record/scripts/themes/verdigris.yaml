@@ -1,0 +1,15 @@
+# Verdigris — deep botanical glass, luminous mint motion
+cursor: { size: 24, fill: "#F4FFF9", stroke: "#123D35", ripple: "rgba(71,230,177,0.38)" }
+card:
+  background: "rgba(8,30,28,0.94)"
+  border: "rgba(150,255,220,0.24)"
+  text: "#F2FFF9"
+  accent: "#47E6B1"
+  radius: 18
+  width: 304
+  heroWidth: 420
+  font: "Inter, ui-sans-serif, system-ui, sans-serif"
+camera: { easing: "cubic-bezier(0.22,1,0.36,1)", defaultScale: 1.16, zoomDuration: 0.9, settle: 0.16 }
+movement: { speed: 0.98, arc: 0.14, minDuration: 0.38, maxDuration: 1.25 }
+typing: { delay: 38 }
+timing: { preClick: 0.3, postClick: 0.55, cardDefault: 3.2, heroDefault: 4.6 }

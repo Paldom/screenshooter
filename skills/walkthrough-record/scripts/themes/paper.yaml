@@ -1,0 +1,10 @@
+# Paper theme — light cards with dark ink, for dark-mode apps
+cursor:
+  fill: "#F4F5FA"
+  stroke: "#171A26"
+  ripple: "#5A5BF2"
+card:
+  background: "rgba(255,255,255,.94)"
+  border: "rgba(23,26,38,.10)"
+  text: "#171A26"
+  accent: "#5A5BF2"

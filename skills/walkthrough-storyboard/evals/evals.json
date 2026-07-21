@@ -1,0 +1,51 @@
+{
+  "skill": "walkthrough-storyboard",
+  "cases": [
+    { "type": "should_trigger", "prompt": "write a walkthrough scenario for our app's invite flow" },
+    { "type": "should_trigger", "prompt": "storyboard a 60 second product tour of the dashboard" },
+    { "type": "should_trigger", "prompt": "plan the zoom beats and explanation cards for the demo video" },
+    { "type": "should_trigger", "prompt": "draft the scenario yaml for recording our onboarding" },
+    { "type": "should_trigger", "prompt": "help me script a screen recording tour of my saas" },
+    { "type": "should_trigger", "prompt": "what should the explanation cards say in the signup walkthrough" },
+    { "type": "should_trigger", "prompt": "turn this feature list into a product tour script for the recorder" },
+    { "type": "should_trigger", "prompt": "the walkthrough feels frantic, to many zooms — calm it down" },
+    { "type": "should_trigger", "prompt": "pick a look and feel theme for our walkthrough video" },
+    { "type": "should_not_trigger", "prompt": "record the walkthrough scenario into an mp4" },
+    { "type": "should_not_trigger", "prompt": "run the recorder on tour.yaml" },
+    { "type": "should_not_trigger", "prompt": "the exported gif is 16 megs, shrink it" },
+    { "type": "should_not_trigger", "prompt": "write a video script for our youtube ad" },
+    { "type": "should_not_trigger", "prompt": "storyboard our brand animation in after effects" },
+    { "type": "should_not_trigger", "prompt": "write playwright tests for the tour page" },
+    { "type": "should_not_trigger", "prompt": "design onboarding tooltips inside the app" },
+    { "type": "should_not_trigger", "prompt": "add a product tour library like intro.js to our react app" },
+    { "type": "should_not_trigger", "prompt": "make a slide deck walking through the architecture" },
+    {
+      "type": "quality",
+      "prompt": "Storyboard a 45-second walkthrough of the bundled demo app covering search, task creation and dark mode",
+      "expected_behavior": [
+        "produces a complete schema-1 scenario YAML (url, viewport, steps) that passes the recorder's validator",
+        "follows the craft rules: one zoom per logical step, zoom scale 1.3-2.0, card titles 3-8 words, bodies 8-20 words, pre/post-click pauses respected via defaults",
+        "anchors steps on stable selectors (data-testid) and sequences beats zoom-in -> act -> card -> zoom-out",
+        "hands off to walkthrough-record for the actual recording instead of running ffmpeg/playwright ad hoc"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "Write a recording scenario for our checkout flow at https://shop.test — here's the feature list and the page uses emails and card numbers in test data",
+      "expected_behavior": [
+        "asks for or derives stable selectors instead of inventing brittle ones",
+        "adds mask entries for the email/payment fields and flags storageState for the logged-in state",
+        "keeps total runtime in the 30-90s band with a hook (hero card) up front and a result/CTA beat at the end"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "Our app is dark-themed and the default cards disappear against it — fix the look",
+      "expected_behavior": [
+        "selects or customizes a theme (e.g. the paper preset or inline card colors) rather than editing the recorder engine",
+        "keeps card text contrast at or above 4.5:1 per the theming reference",
+        "shows the theme block inline in the scenario or as a theme file next to it"
+      ]
+    }
+  ]
+}

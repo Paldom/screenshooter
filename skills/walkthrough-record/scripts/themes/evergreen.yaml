@@ -1,0 +1,15 @@
+# Evergreen — warm ivory glass, deep-pine serif, jade ripple
+cursor: { size: 22, fill: "#14342B", stroke: "rgba(255,250,240,0.95)", ripple: "rgba(15,118,110,0.4)" }
+card:
+  background: "rgba(250,246,238,0.92)"
+  border: "rgba(18,59,51,0.16)"
+  text: "#14342B"
+  accent: "#0F766E"
+  radius: 14
+  width: 300
+  heroWidth: 380
+  font: "'Fraunces', Georgia, serif"
+camera: { easing: "cubic-bezier(0.32,0,0.12,1)", defaultScale: 1.55, zoomDuration: 0.95, settle: 0.3 }
+movement: { speed: 1.17, arc: 0.2, minDuration: 0.4, maxDuration: 1.1 }
+typing: { delay: 48 }
+timing: { preClick: 0.35, postClick: 0.55, cardDefault: 3.2, heroDefault: 4.6 }

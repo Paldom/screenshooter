@@ -1,0 +1,38 @@
+# Lucent — minimal frosted glass, adaptive brand accent
+cursor:
+  size: 22
+  fill: "#FFFFFF"
+  stroke: "#17191F"
+  ripple: auto
+  style: halo
+  click: rings
+card:
+  layout: minimal
+  padding: 1.7
+  blur: 24
+  saturate: 1.35
+  background: "rgba(255, 255, 255, 0.84)"
+  border: "rgba(255, 255, 255, 0.72)"
+  text: "#17191F"
+  accent: auto
+  radius: 22
+  width: 300
+  heroWidth: 440
+  font: "Inter, ui-sans-serif, system-ui, sans-serif"
+camera:
+  easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+  defaultScale: 1.24
+  zoomDuration: 1.05
+  settle: 0.24
+movement:
+  speed: 1.05
+  arc: 0.08
+  minDuration: 0.55
+  maxDuration: 1.25
+typing:
+  delay: 42
+timing:
+  preClick: 0.32
+  postClick: 0.42
+  cardDefault: 3.2
+  heroDefault: 4.1

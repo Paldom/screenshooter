@@ -1,0 +1,11 @@
+{
+  "name": "screenshooter-recorder",
+  "private": true,
+  "description": "Playwright-driven walkthrough recorder: scenario YAML -> mp4 + gif",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "playwright": "1.61.1",
+    "yaml": "2.8.0"
+  }
+}

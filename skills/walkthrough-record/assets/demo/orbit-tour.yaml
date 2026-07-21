@@ -1,0 +1,63 @@
+# Demo scenario: 55-second product tour of the bundled Orbit demo app.
+# Record it with:
+#   node "<skill>/scripts/record.mjs" "<skill>/assets/demo/orbit-tour.yaml" --out ./out
+schema: 1
+name: orbit-tour
+url: orbit.html
+viewport: { width: 1280, height: 800 }
+theme: glass
+output:
+  fps: 30
+  gif: { width: 960, fps: 12 }
+
+steps:
+  # intro
+  - card: { style: hero, kicker: "Product tour", title: "Meet Orbit", body: "Your team's command center — projects, delivery, and momentum in one calm view.", duration: 2.4 }
+
+  # navigate
+  - ring: "[data-testid=nav]"
+  - move: { to: "[data-testid=nav-projects]" }
+  - card: { kicker: "Step 1 · Navigate", title: "One-click navigation", body: "Projects, tasks, docs, and reports live one click away — or hit ⌘K from anywhere.", at: "[data-testid=nav]", side: right, duration: 2.8 }
+  - click: "[data-testid=nav-projects]"
+  - wait: 0.4
+  - click: "[data-testid=nav-dashboard]"
+  - ring: hide
+
+  # insights
+  - zoom: { to: "[data-testid=kpis]", scale: 1.45, duration: 1.0 }
+  - move: { to: "[data-testid=kpi-ontime]" }
+  - card: { kicker: "Step 2 · Insights", title: "Delivery, live", body: "On-time rate, velocity, and shipped work refresh the moment your team moves.", at: "[data-testid=kpi-ontime]", side: bottom, duration: 3.0 }
+  - zoom: { to: "[data-testid=chart-card]", scale: 1.4, duration: 1.0 }
+  - move: { to: "[data-testid=chart]", ax: 0.15, ay: 0.7 }
+  - move: { to: "[data-testid=chart]", ax: 0.85, ay: 0.25, duration: 2.2 }
+  - card: { kicker: "Step 3 · Insights", title: "Trends at a glance", body: "Trace any week to see exactly what shipped — no report tab required.", at: "[data-testid=chart-card]", side: top, duration: 2.8 }
+  - zoom: reset
+
+  # search
+  - click: "[data-testid=search-input]"
+  - type: { text: "apollo", delay: 95 }
+  - wait: 0.5
+  - card: { kicker: "Step 4 · Search", title: "Find anything, fast", body: "Search reaches projects, files, and people the moment you type.", at: "[data-testid=search-results]", side: right, duration: 2.8 }
+  - click: "[data-testid=search-result-1]"
+
+  # create
+  - click: "[data-testid=new-task]"
+  - wait: 0.5
+  - zoom: { to: "[data-testid=task-modal]", scale: 1.25, duration: 0.9 }
+  - click: "[data-testid=task-title]"
+  - type: { text: "Finalize onboarding flow", delay: 55 }
+  - click: "[data-testid=priority-high]"
+  - click: "[data-testid=create-task]"
+  - zoom: { reset: true, duration: 1.1 }
+  - card: { kicker: "Step 5 · Create", title: "Capture work in seconds", body: "New tasks land on the board and ping their owners instantly.", at: "[data-testid=toast]", side: left, duration: 2.8 }
+
+  # theme
+  - zoom: { to: "[data-testid=theme-toggle]", scale: 1.6, duration: 0.9 }
+  - click: "[data-testid=theme-toggle]"
+  - wait: 0.7
+  - zoom: { reset: true, duration: 1.3 }
+  - card: { kicker: "Step 6 · Theme", title: "Dark mode, one click", body: "The whole workspace flips — charts, cards, everything.", at: "[data-testid=theme-toggle]", side: bottom, duration: 2.6 }
+
+  # outro
+  - move: { to: [700, 430] }
+  - card: { style: hero, kicker: "End of tour", title: "That's Orbit.", body: "Built for teams that ship on time — and see it happening.", duration: 2.6 }

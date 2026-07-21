@@ -1,0 +1,38 @@
+# Glint — minimal frosted glass, adaptive brand accent
+cursor:
+  size: 20
+  style: dot
+  fill: "rgba(255, 255, 255, 0.95)"
+  stroke: "rgba(15, 23, 42, 0.18)"
+  ripple: auto
+  click: rings
+card:
+  layout: minimal
+  padding: 1.6
+  blur: 22
+  saturate: 1.4
+  background: "rgba(255, 255, 255, 0.60)"
+  border: "rgba(15, 23, 42, 0.08)"
+  text: "#111827"
+  accent: auto
+  radius: 20
+  width: 300
+  heroWidth: 460
+  font: "Inter, -apple-system, sans-serif"
+camera:
+  easing: cubic-bezier(0.22, 1, 0.36, 1)
+  defaultScale: 1.35
+  zoomDuration: 1.0
+  settle: 0.3
+movement:
+  speed: 0.9
+  arc: 0.12
+  minDuration: 0.4
+  maxDuration: 1.4
+typing:
+  delay: 55
+timing:
+  preClick: 0.35
+  postClick: 0.45
+  cardDefault: 3.2
+  heroDefault: 4.0

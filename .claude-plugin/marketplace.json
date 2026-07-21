@@ -1,0 +1,15 @@
+{
+  "name": "screenshooter",
+  "owner": {
+    "name": "Paldom",
+    "url": "https://github.com/Paldom"
+  },
+  "plugins": [
+    {
+      "name": "screenshooter",
+      "source": ".",
+      "description": "Skills for creating polished screen-recording walkthrough and tutorial videos of web apps, with smooth scripted mouse movements, zoom effects, and explanation cards.",
+      "category": "development"
+    }
+  ]
+}

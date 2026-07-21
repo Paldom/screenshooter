@@ -1,0 +1,38 @@
+# Lumen — minimal frosted glass, adaptive brand accent
+cursor:
+  size: 20
+  fill: "rgba(255,255,255,0.92)"
+  stroke: "rgba(15,15,18,0.14)"
+  ripple: auto
+  style: halo
+  click: rings
+card:
+  layout: minimal
+  padding: 1.7
+  blur: 24
+  saturate: 1.2
+  background: "rgba(255,255,255,0.62)"
+  border: "rgba(255,255,255,0.48)"
+  text: "rgba(12,12,14,0.92)"
+  accent: auto
+  radius: 18
+  width: 300
+  heroWidth: 440
+  font: "Inter, ui-sans-serif, system-ui, sans-serif"
+camera:
+  easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+  defaultScale: 1.28
+  zoomDuration: 1.05
+  settle: 0.28
+movement:
+  speed: 0.9
+  arc: 0.12
+  minDuration: 0.5
+  maxDuration: 1.25
+typing:
+  delay: 52
+timing:
+  preClick: 0.35
+  postClick: 0.45
+  cardDefault: 3.6
+  heroDefault: 4.0

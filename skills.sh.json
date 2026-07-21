@@ -1,0 +1,11 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Walkthrough videos",
+      "description": "Storyboard a web-app product tour, then record it into a cinematic mp4 and gif — smooth scripted cursor, camera zooms, explanation cards, YAML-themed look and feel.",
+      "skills": ["walkthrough-storyboard", "walkthrough-record"]
+    }
+  ]
+}

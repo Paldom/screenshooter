@@ -1,0 +1,15 @@
+# Atlas — ivory field-notes serif, deep teal ink
+cursor: { size: 22, fill: "#0F766E", stroke: "#FFFFFF", ripple: "rgba(15,118,110,0.35)" }
+card:
+  background: "rgba(251,247,239,0.94)"
+  border: "rgba(28,25,23,0.10)"
+  text: "#1C1917"
+  accent: "#0F766E"
+  radius: 10
+  width: 300
+  heroWidth: 440
+  font: '"Source Serif 4", Georgia, serif'
+camera: { easing: "cubic-bezier(0.22,1,0.36,1)", defaultScale: 1.15, zoomDuration: 0.9, settle: 0.35 }
+movement: { speed: 1.56, arc: 0.12, minDuration: 0.35, maxDuration: 1.2 }
+typing: { delay: 28 }
+timing: { preClick: 0.45, postClick: 0.6, cardDefault: 3.4, heroDefault: 5.0 }

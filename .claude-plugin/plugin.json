@@ -1,0 +1,11 @@
+{
+  "name": "screenshooter",
+  "description": "Skills for creating polished screen-recording walkthrough and tutorial videos of web apps, with smooth scripted mouse movements, zoom effects, and explanation cards.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Paldom",
+    "url": "https://github.com/Paldom"
+  },
+  "homepage": "https://github.com/Paldom/screenshooter",
+  "license": "MIT"
+}

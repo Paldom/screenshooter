@@ -1,0 +1,9 @@
+# Indigo theme — cool accent, dark glass cards (default layout values inherited)
+cursor:
+  ripple: "#7D7EFF"
+card:
+  accent: "#9BA0FF"
+  background: "rgba(15,17,28,.90)"
+  border: "rgba(155,160,255,.22)"
+camera:
+  easing: "cubic-bezier(.45,0,.2,1)"

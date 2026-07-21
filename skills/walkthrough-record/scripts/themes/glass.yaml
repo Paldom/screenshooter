@@ -1,0 +1,36 @@
+# Glass — the flagship minimal-glassmorph look: Vellum's frosted cards + Lucent's halo cursor, extra-airy padding
+cursor:
+  size: 22
+  style: halo
+  fill: "#FFFFFF"
+  stroke: "#17191F"
+  ripple: auto
+  click: rings
+card:
+  layout: minimal
+  padding: 2.0
+  blur: 22
+  saturate: 1.4
+  background: "rgba(255,255,255,0.72)"
+  border: "rgba(16,18,22,0.10)"
+  text: "#16181D"
+  accent: auto
+  radius: 18
+  width: 320
+  heroWidth: 460
+  font: "Inter, -apple-system, system-ui, sans-serif"
+camera:
+  easing: cubic-bezier(0.22, 1, 0.36, 1)
+  defaultScale: 1.35
+  zoomDuration: 1.0
+  settle: 0.3
+movement:
+  speed: 0.9
+  arc: 0.12
+typing:
+  delay: 45
+timing:
+  preClick: 0.35
+  postClick: 0.45
+  cardDefault: 3.4
+  heroDefault: 3.8
