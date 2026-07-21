@@ -1,6 +1,7 @@
 ---
 name: walkthrough-storyboard
 description: Plans and writes the scenario YAML for a web-app walkthrough video — story beats, cursor path, zoom placement, explanation-card copy, theme choice. Use when asked to storyboard, script, plan, draft or refine a product tour or walkthrough scenario, its pacing, or its cards. Not for running the recorder, exporting mp4/gif, or building in-app onboarding tours.
+license: MIT
 argument-hint: <app/flow to storyboard>
 ---
 

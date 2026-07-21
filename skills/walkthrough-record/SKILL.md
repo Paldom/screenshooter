@@ -1,6 +1,7 @@
 ---
 name: walkthrough-record
 description: Records polished walkthrough/tutorial videos of a web app from a scenario YAML — smooth scripted cursor, camera zooms, explanation cards; exports mp4 and gif. Use when asked to record, render, capture or export a product tour, demo or walkthrough video, or when the recorder errors. Not for authoring the scenario/storyboard, OS screen capture, or Playwright tests.
+license: MIT
 argument-hint: <scenario.yaml or app URL>
 ---
 
