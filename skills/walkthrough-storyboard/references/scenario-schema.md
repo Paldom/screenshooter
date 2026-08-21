@@ -10,6 +10,7 @@ non-numeric numbers before any browser opens.
 - [Steps](#steps)
 - [Timing model](#timing-model)
 - [Theme block](#theme-block)
+- [Frame block](#frame-block)
 - [Complete example](#complete-example)
 
 ## Top-level keys
@@ -26,7 +27,7 @@ non-numeric numbers before any browser opens.
 | `frozenTime` | date string | Freezes `Date`/`Date.now()` so "3 min ago" labels stay put (rAF/`performance.now` unaffected) |
 | `mask` | list of CSS selectors | Opaque privacy covers, applied before the first frame; fail-closed (0 matches → abort) |
 | `theme` | preset name \| path \| inline map | See [Theme block](#theme-block) |
-| `output` | map | `dir`, `fps` (30), `scale` (2 = crisp 2×; set 1 if the app has breakpoints between base and base×2), `mp4: false` to skip, `gif: false` or `{width: 960, fps: 12, colors: 128, dither, start, duration}` |
+| `output` | map | `dir`, `fps` (30), `scale` (2 = crisp 2×; set 1 if the app has breakpoints between base and base×2), `mp4: false` to skip, `gif: false` or `{width: 960, fps: 12, colors, dither, start, duration}`, `frame` (see [Frame block](#frame-block)) |
 | `steps` | list, required | The timeline |
 
 ## Steps
@@ -67,6 +68,25 @@ of quiet frames are added automatically.
 to the scenario, or an inline map. Keys and defaults live in
 [theming.md](theming.md).
 
+## Frame block
+
+`output.frame` insets the capture into a wallpaper canvas with rounded corners, a
+soft shadow and an optional macOS window header. Omit it (or `false`) for
+full-bleed — that stays the default. `true` takes every default below.
+
+| Key | Type / default | Meaning |
+| --- | --- | --- |
+| `background` | `auto` | `auto` (derived from the recorded app) \| `studio` \| `midnight` \| `spotlight` \| `paper` \| any CSS colour or gradient |
+| `pad` | `0.062` | Canvas padding as a fraction of canvas **width** (0–0.25) |
+| `radius` | `13`, or `10` with `chrome` | Corner radius in CSS px (0–60), scaled by `output.scale` |
+| `chrome` | `false` | macOS window header — 12 pt lights, 20 pt centres, 28 pt bar |
+| `title` | `""` | Centred header title; `chrome` only, HTML-escaped |
+
+Framing happens at export, over a full-bleed webm master, so the frame can be
+changed or removed by re-exporting — never by re-recording. It costs ~20 % of the
+app's linear resolution, so don't combine it with `output: {scale: 1}`. Table of
+which background to pick: [theming.md](theming.md#frame-wallpaper-canvas).
+
 ## Complete example
 
 ```yaml
@@ -78,7 +98,10 @@ colorScheme: light
 storageState: ./auth.json
 mask: ["[data-testid=user-email]"]
 theme: indigo
-output: { fps: 30, gif: { start: 12, duration: 8, width: 800 } }
+output:
+  fps: 30
+  gif: { start: 12, duration: 8, width: 800 }
+  frame: { background: auto }        # add `chrome: true` for a macOS window header
 steps:
   - card: { style: hero, kicker: "Product tour", title: "Invite your team", body: "From solo to shipping together in 20 seconds.", duration: 2.2 }
   - click: "[data-testid=nav-members]"

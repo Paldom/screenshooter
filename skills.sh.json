@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "Walkthrough videos",
-      "description": "Storyboard a web-app product tour, then record it into a cinematic mp4 and gif — smooth scripted cursor, camera zooms, explanation cards, YAML-themed look and feel.",
+      "description": "Storyboard a web-app product tour, then record it into a cinematic mp4 and gif — smooth scripted cursor, camera zooms, explanation cards, and a wallpaper frame that picks its own colours from your app.",
       "skills": ["walkthrough-storyboard", "walkthrough-record"]
     }
   ]

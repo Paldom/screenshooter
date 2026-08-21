@@ -6,6 +6,7 @@
 // upgrade path if capture jitter ever matters (ponytail: realtime is enough today).
 import { chromium } from 'playwright';
 import { parse } from 'yaml';
+import { frameErrors, framePlan, renderLayers, frameGraph } from './frame.mjs';
 import { readFileSync, mkdirSync, existsSync, rmSync, renameSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { dirname, resolve, join, basename } from 'node:path';
@@ -83,6 +84,7 @@ function validateScenario(s) {
   const out = s.output ?? {};
   if (out.fps != null && !(out.fps >= 5 && out.fps <= 60)) errs.push('output.fps must be 5-60');
   if (out.scale != null && !(out.scale >= 1 && out.scale <= 3)) errs.push('output.scale must be 1-3');
+  errs.push(...frameErrors(out.frame));
   s.steps?.forEach((step, i) => {
     const where = `steps[${i + 1}]`;
     if (typeof step === 'string') {
@@ -173,10 +175,12 @@ const secs = v => (typeof v === 'number' ? v : parseFloat(v));
 
 // ---------- overlay ----------
 const overlaySource = readFileSync(join(HERE, 'overlay.js'), 'utf8');
+let pageContext = null;   // {accent, bg, isDark} — sampled once, feeds `frame.background: auto`
 async function injectOverlay(page) {
   if (scale !== 1) await page.evaluate(z => { document.documentElement.style.zoom = z; }, scale);
   await page.evaluate(t => { window.__shooterTheme = t; }, { ...theme, __zoom: scale });
   await page.addScriptTag({ content: overlaySource });
+  if (!pageContext) pageContext = await page.evaluate(() => window.__shooter.context());
   if (scenario.mask?.length) {
     const missing = await page.evaluate(sels => window.__shooter.mask(sels), scenario.mask);
     if (missing.length) fail(`mask selectors matched nothing: ${missing.join(', ')} — refusing to record (fail-closed)`);
@@ -322,25 +326,49 @@ function atomically(out, work) {
   work(tmp);
   renameSync(tmp, out);
 }
-function exportMp4(webm, out, fps) {
-  atomically(out, tmp => ffmpeg(['-i', webm, '-f', 'mp4',
-    '-vf', `fps=${fps},scale=trunc(iw/2)*2:trunc(ih/2)*2`,
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
-    '-movflags', '+faststart', tmp]));
+// A frame turns both exports into filter_complex graphs over three inputs
+// (master + plate + mask). The webm master always stays full-bleed, so the frame
+// can be changed or dropped by re-exporting — never by re-recording.
+const frameInputs = f => ['-loop', '1', '-i', f.paths.plate, '-loop', '1', '-i', f.paths.mask];
+
+function exportMp4(webm, out, fps, frame) {
+  const enc = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
+    '-movflags', '+faststart'];
+  atomically(out, tmp => ffmpeg(frame
+    ? ['-i', webm, ...frameInputs(frame), '-filter_complex',
+      `${frameGraph(frame.plan, `fps=${fps}`)};[framed]format=yuv420p[out]`,
+      '-map', '[out]', '-f', 'mp4', ...enc, tmp]
+    : ['-i', webm, '-f', 'mp4',
+      '-vf', `fps=${fps},scale=trunc(iw/2)*2:trunc(ih/2)*2`, ...enc, tmp]));
   try {
     const probe = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0',
       '-show_entries', 'stream=width,height,nb_frames:format=duration', '-of', 'csv=p=0', out]).toString().trim();
     log(`mp4 check: ${probe.replace(/\n/g, ' | ')}`);
   } catch { /* ffprobe missing is not fatal */ }
 }
-function exportGif(webm, out, { fps = 12, width = 960, colors = 128, dither = 'bayer:bayer_scale=5', start, duration } = {}) {
+function exportGif(webm, out, { fps = 12, width = 960, colors, dither, start, duration } = {}, frame) {
+  // Gradient wallpapers band badly in a 128-colour bayer palette; 256 + error
+  // diffusion is both smoother AND smaller here (diffusion at 128 colours makes
+  // per-pixel noise that kills inter-frame compression). Unframed keeps the
+  // cheaper defaults.
+  const nColors = colors ?? (frame ? 256 : 128);
+  const dth = dither ?? (frame ? 'sierra2_4a' : 'bayer:bayer_scale=5');
   const palette = out + '.palette.png';
   const seek = [...(start != null ? ['-ss', String(start)] : []), ...(duration != null ? ['-t', String(duration)] : [])];
-  const vf = `fps=${fps},scale=${width}:-1:flags=lanczos`;
+  const post = `scale=${width}:-1:flags=lanczos`;
+  const vf = `fps=${fps},${post}`;
   atomically(out, tmp => {
-    ffmpeg([...seek, '-i', webm, '-vf', `${vf},palettegen=max_colors=${colors}:stats_mode=diff`, palette]);
-    ffmpeg([...seek, '-i', webm, '-i', palette, '-f', 'gif', '-lavfi',
-      `${vf}[x];[x][1:v]paletteuse=dither=${dither}:diff_mode=rectangle`, '-loop', '0', tmp]);
+    if (frame) {
+      const g = frameGraph(frame.plan, `fps=${fps}`);
+      ffmpeg([...seek, '-i', webm, ...frameInputs(frame), '-filter_complex',
+        `${g};[framed]${post},palettegen=max_colors=${nColors}:stats_mode=diff`, '-frames:v', '1', palette]);
+      ffmpeg([...seek, '-i', webm, ...frameInputs(frame), '-i', palette, '-f', 'gif', '-filter_complex',
+        `${g};[framed]${post}[x];[x][3:v]paletteuse=dither=${dth}:diff_mode=rectangle`, '-loop', '0', tmp]);
+    } else {
+      ffmpeg([...seek, '-i', webm, '-vf', `${vf},palettegen=max_colors=${nColors}:stats_mode=diff`, palette]);
+      ffmpeg([...seek, '-i', webm, '-i', palette, '-f', 'gif', '-lavfi',
+        `${vf}[x];[x][1:v]paletteuse=dither=${dth}:diff_mode=rectangle`, '-loop', '0', tmp]);
+    }
     rmSync(palette, { force: true });
   });
 }
@@ -400,11 +428,24 @@ if (scenario.mask?.length) {
 }
 await sleep(400); // lead-in frames
 
+let stopped = false;
+const stopCast = async () => { if (!stopped) { stopped = true; await page.screencast.stop(); } };
+let frame = null;
 try {
   for (let i = 0; i < scenario.steps.length; i++) await runStep(page, scenario.steps[i], i);
   await sleep(600); // tail frames
+  await stopCast();
+  // Plate + mask are rendered by the browser we already have open, in a FRESH
+  // context so the mask curtain and frozen-time init scripts can't reach them.
+  if (!webmOnly && scenario.output?.frame) {
+    const plan = framePlan({ frame: scenario.output.frame, view, scale, context: pageContext });
+    frame = { plan, paths: await renderLayers(browser, plan, outDir, name) };
+    log(`frame: ${plan.canvas.w}x${plan.canvas.h} canvas · ${plan.innerW}x${plan.innerH} video · `
+      + `background ${plan.backgroundName} (${plan.isDark ? 'dark' : 'light'} app)`
+      + `${plan.chrome ? ` · macOS header ${plan.titleH}px` : ''}`);
+  }
 } finally {
-  await page.screencast.stop();
+  await stopCast();
   await browser.close();
 }
 log(`recorded ${webmPath} in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
@@ -413,13 +454,16 @@ if (!webmOnly) {
   const fps = scenario.output?.fps ?? 30;
   if (scenario.output?.mp4 !== false) {
     const mp4 = join(outDir, name + '.mp4');
-    exportMp4(webmPath, mp4, fps);
+    exportMp4(webmPath, mp4, fps, frame);
     log('wrote ' + mp4);
   }
   if (scenario.output?.gif !== false) {
     const gif = join(outDir, name + '.gif');
-    exportGif(webmPath, gif, typeof scenario.output?.gif === 'object' ? scenario.output.gif : {});
+    exportGif(webmPath, gif, typeof scenario.output?.gif === 'object' ? scenario.output.gif : {}, frame);
     log('wrote ' + gif);
   }
+  // frame layers are left in place — they are the inputs for re-exporting a gif
+  // from the webm master without re-recording (references/export-profiles.md)
+  if (frame) log(`frame layers kept: ${basename(frame.paths.plate)}, ${basename(frame.paths.mask)}`);
 }
 log('done');

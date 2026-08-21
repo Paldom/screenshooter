@@ -9,6 +9,11 @@ theme: glass
 output:
   fps: 30
   gif: { width: 960, fps: 12 }
+  # Wallpaper canvas + rounded corners + shadow, added at export time.
+  # `background: auto` derives the wallpaper from Orbit's own brand colour.
+  # Add `chrome: true` (and an optional `title:`) for a macOS window header.
+  frame:
+    background: auto
 
 steps:
   # intro

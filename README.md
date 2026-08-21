@@ -4,11 +4,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![skills.sh](https://skills.sh/b/Paldom/screenshooter)](https://skills.sh/Paldom/screenshooter)
 
-Skills for creating polished screen-recording walkthrough and tutorial videos of web apps, with smooth scripted mouse movements, zoom effects, and explanation cards.
+Skills for creating polished screen-recording walkthrough and tutorial videos of web apps, with smooth scripted mouse movements, zoom effects, explanation cards, and a wallpaper frame.
 
-![A recorded walkthrough of the bundled Orbit demo app: camera zooms, explanation cards and a smooth scripted cursor, rendered in the glass theme](docs/assets/orbit-tour.gif)
+![A recorded walkthrough of the bundled Orbit demo app: camera zooms, explanation cards and a smooth scripted cursor, inset on a wallpaper canvas with rounded corners and a soft shadow](docs/assets/orbit-tour.gif)
 
-*14 seconds from the bundled [demo scenario](skills/walkthrough-record/assets/demo/orbit-tour.yaml), recorded headlessly with the `glass` preset — everything you see (cursor, zoom, cards, tooltip trace) is scripted YAML.*
+*14 seconds from the bundled [demo scenario](skills/walkthrough-record/assets/demo/orbit-tour.yaml), recorded headlessly with the `glass` preset — everything you see (cursor, zoom, cards, tooltip trace) is scripted YAML. The wallpaper, rounded corners and shadow come from `output.frame`, whose `background: auto` derived that violet from Orbit's own brand colour.*
 
 Agent Skills for [Claude Code](https://code.claude.com/docs/en/skills) (and any
 [Agent Skills](https://agentskills.io)-compatible tool). Each skill is a folder under
@@ -54,8 +54,8 @@ explicitly with `/<skill-name>`.
 
 | Skill | Description |
 | --- | --- |
-| [walkthrough-storyboard](skills/walkthrough-storyboard/) | Plans and writes the scenario YAML for a web-app walkthrough video — story beats, cursor path, zoom placement, explanation-card copy, theme choice. |
-| [walkthrough-record](skills/walkthrough-record/) | Records that scenario into a polished video with a bundled Playwright recorder — smooth cursor, camera zooms, cards, privacy masks — and exports mp4 + gif. |
+| [walkthrough-storyboard](skills/walkthrough-storyboard/) | Plans and writes the scenario YAML for a web-app walkthrough video — story beats, cursor path, zoom placement, explanation-card copy, theme and frame choice. |
+| [walkthrough-record](skills/walkthrough-record/) | Records that scenario into a polished video with a bundled Playwright recorder — smooth cursor, camera zooms, cards, privacy masks, wallpaper frame with optional macOS header — and exports mp4 + gif. |
 
 The two skills compose into a workflow: storyboard → record → review. A
 paste-ready orchestration goal lives in [docs/setup-prompt.md](docs/setup-prompt.md).
@@ -66,6 +66,11 @@ bash skills/walkthrough-record/scripts/setup.sh   # once: pinned deps + Chromium
 node skills/walkthrough-record/scripts/record.mjs \
   skills/walkthrough-record/assets/demo/orbit-tour.yaml --out ./out
 ```
+
+The frame above is one `output.frame` block in the scenario — off by default,
+`background: auto` derives the wallpaper from the recorded app, `chrome: true`
+adds a real-geometry macOS window header. It runs at export time over a
+full-bleed master, so you can reframe a take without re-recording it.
 
 ## Repository structure
 
