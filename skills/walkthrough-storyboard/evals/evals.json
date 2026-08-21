@@ -46,6 +46,15 @@
         "keeps card text contrast at or above 4.5:1 per the theming reference",
         "shows the theme block inline in the scenario or as a theme file next to it"
       ]
+    },
+    {
+      "type": "quality",
+      "prompt": "Plan a landing-page hero video for our app plus a short clip for the in-app help centre",
+      "expected_behavior": [
+        "sets output.frame on the landing-page scenario (background: auto unless a brand colour is given) and leaves the in-app clip full-bleed",
+        "keeps frame settings under output.frame, not in the theme block, and does not turn chrome on by default",
+        "flags that framing costs ~20% of the app's linear resolution so it should not be combined with output.scale 1"
+      ]
     }
   ]
 }

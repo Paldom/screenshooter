@@ -1,6 +1,6 @@
 ---
 name: walkthrough-storyboard
-description: Plans and writes the scenario YAML for a web-app walkthrough video — story beats, cursor path, zoom placement, explanation-card copy, theme choice. Use when asked to storyboard, script, plan, draft or refine a product tour or walkthrough scenario, its pacing, or its cards. Not for running the recorder, exporting mp4/gif, or building in-app onboarding tours.
+description: Plans and writes the scenario YAML for a web-app walkthrough video — story beats, cursor path, zoom placement, explanation-card copy, theme and frame choice. Use when asked to storyboard, script, plan, draft or refine a product tour or walkthrough scenario, its pacing, or its cards. Not for running the recorder, exporting mp4/gif, or building in-app onboarding tours.
 license: MIT
 argument-hint: <app/flow to storyboard>
 ---
@@ -40,6 +40,11 @@ wall-of-text callouts, no narrative spine, brittle selectors.
    auto-compute from distance; add an `assert` after state-changing actions.
 5. **Pick the look** per `references/theming.md`: default coral-glass, `indigo`,
    `paper` (for dark apps), or an inline `theme:` block. Card contrast ≥ 4.5:1.
+   Then decide the **frame**: `output.frame` puts the capture on a wallpaper canvas
+   with rounded corners and a shadow (`background: auto` derives it from the app;
+   `chrome: true` adds a macOS window header). Full-bleed stays the default —
+   frame marketing and landing-page videos, leave in-app help and anything that
+   will be cropped unframed.
 6. **Validate and hand off.** If the recorder is installed, lint the YAML with
    its browser-free mode:
    `node <walkthrough-record>/scripts/record.mjs scenario.yaml --validate-only`

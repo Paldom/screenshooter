@@ -66,6 +66,39 @@ Presets live in the record skill's `scripts/themes/`; a path next to the
 scenario also works (`theme: ./brand.yaml`), which is how per-project brand
 themes ship.
 
+## Frame (wallpaper canvas)
+
+The frame is **not** a theme key — it lives under `output.frame` because it is an
+export-time decision, not something the overlay draws. Same video, reframed by
+re-exporting. Off unless the scenario asks for it.
+
+```yaml
+output:
+  frame:
+    background: auto     # auto | studio | midnight | spotlight | paper | any CSS colour/gradient
+    chrome: false        # macOS window header — default off
+    title: "Orbit"       # header title, chrome only
+    pad: 0.062           # canvas padding as a fraction of canvas width
+    radius: 13           # corner radius, CSS px (default 10 = real macOS when chrome is on)
+```
+
+| Background | Look | When |
+| --- | --- | --- |
+| `auto` | Derived from the app: hue from its brand colour, lightness pushed away from its own background | **The default.** Any app, especially one you haven't seen |
+| `studio` | Violet → magenta → navy mesh | Light apps, high-energy launch videos |
+| `midnight` | Near-black neutral with a cool top-left lift | Brand-neutral; lets a colourful app dominate |
+| `spotlight` | Near-black stage with a warm accent bloom | Highest contrast; dark sites, hero sections |
+| `paper` | Warm off-white | Light docs pages where a dark canvas would punch a hole |
+
+Pass any CSS instead of a preset name for brand work:
+`background: "linear-gradient(160deg,#0B1F3A,#071021)"`.
+
+`chrome: true` draws a real-geometry macOS header: 12 pt lights on 20 pt centres,
+20 pt in from the edge, 28 pt bar, 10 pt corner radius, all scaled by
+`output.scale`. It costs vertical room — the video shrinks, the canvas doesn't.
+Use it when the point is "this is a desktop app"; leave it off for embeds and
+anything that will be cropped.
+
 ## Adaptive accent
 
 `accent: auto` (and/or `ripple: auto`) samples the recorded app's brand color at

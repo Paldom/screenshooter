@@ -10,7 +10,10 @@
     { "type": "should_trigger", "prompt": "export our product tour in mp4 and gif formats" },
     { "type": "should_trigger", "prompt": "create a tutorial video of the signup flow on staging.example.com" },
     { "type": "should_trigger", "prompt": "generate a demo video of the app for the landing page" },
+    { "type": "should_trigger", "prompt": "put my product tour video on a nice gradient background with rounded corners and a shadow" },
+    { "type": "should_trigger", "prompt": "add a mac window header with the traffic light buttons to the demo recording" },
     { "type": "should_not_trigger", "prompt": "write a storyboard for our onboarding tour" },
+    { "type": "should_not_trigger", "prompt": "design a desktop wallpaper with a purple mesh gradient" },
     { "type": "should_not_trigger", "prompt": "plan the beats and card copy for the walkthrough scenario" },
     { "type": "should_not_trigger", "prompt": "take a screenshot of the homepage" },
     { "type": "should_not_trigger", "prompt": "record my screen while I present on zoom" },
@@ -44,6 +47,15 @@
         "consults references/troubleshooting.md and explains the DOM-zoom ceiling (body transform makes fixed/sticky elements zoom with the app)",
         "offers concrete fixes: adjust zoom target/scale, remove zoom beats for that section, or record zoom-free",
         "does not claim the tool supports compositor-side zoom (that is roadmap, not shipped)"
+      ]
+    },
+    {
+      "type": "quality",
+      "prompt": "I already recorded tour.webm last week. Can you put it on a wallpaper background with a macOS window header?",
+      "expected_behavior": [
+        "recognises framing is an export-time pass and re-exports rather than re-recording the tour",
+        "sets output.frame with chrome: true (and a title if the app name is known) rather than editing scripts/",
+        "notes that framing costs ~20% of the app's linear resolution and that the webm master stays full-bleed"
       ]
     },
     {

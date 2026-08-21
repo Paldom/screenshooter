@@ -328,5 +328,19 @@
     return [];
   }
 
-  window.__shooter = { camera, showCard, hideCard, ringShow, ringHide, mask };
+  // ---- page context ----
+  // What the recorded app actually looks like. Read once by the recorder and handed
+  // to the export-time framing pass so `frame: {background: auto}` can derive a
+  // wallpaper from the app's own brand colour and light/dark-ness.
+  function pageContext() {
+    let bg = [255, 255, 255];
+    for (let n = document.body; n; n = n.parentElement) {
+      const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/.exec(getComputedStyle(n).backgroundColor);
+      if (m && (m[4] == null || +m[4] > 0.5)) { bg = [+m[1], +m[2], +m[3]]; break; }
+    }
+    const lum = (0.2126 * bg[0] + 0.7152 * bg[1] + 0.0722 * bg[2]) / 255;
+    return { accent: auto || sampleAccent() || accent, bg: `rgb(${bg.join(',')})`, isDark: lum < 0.5 };
+  }
+
+  window.__shooter = { camera, showCard, hideCard, ringShow, ringHide, mask, context: pageContext };
 })();

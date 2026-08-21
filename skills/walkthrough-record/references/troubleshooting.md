@@ -7,6 +7,7 @@
 - [Blank, black, or missing video](#blank-black-or-missing-video)
 - [Stutter / pacing audit](#stutter--pacing-audit)
 - [Masks](#masks)
+- [Frame looks wrong](#frame-looks-wrong)
 - [Scale and layout differences](#scale-and-layout-differences)
 
 ## Pre-flight validation errors
@@ -81,6 +82,22 @@ is the trigger to prioritize the frame-stepped renderer (roadmap).
   such pages with secrets visible.
 - Never put real credentials in scenarios; use `storageState` (an auth JSON the
   user keeps out of version control) for logged-in tours.
+
+## Frame looks wrong
+
+The frame is composited at export from two stills (`<name>.frame-plate.png`,
+`<name>.frame-mask.png`) that Chromium renders from CSS. Nothing about it touches
+the recording, so every fix here is a re-export.
+
+| Symptom | Fix |
+| --- | --- |
+| Wallpaper colour looks nothing like the app | `background: auto` samples the app's most-repeated saturated button/link colour at the **first** overlay injection. Grey-only chrome → nothing to sample → indigo fallback. Set a named background or raw CSS instead. |
+| Wallpaper stays light/dark after the app flips theme mid-tour | Sampled once, by design (a wallpaper that cross-fades mid-video reads as a glitch). Pin a background, or split the tour into two takes. |
+| Text softer than an unframed take | Expected: default padding scales the app to ~0.80×, i.e. 1.6× raster instead of 2×. Reduce `pad`, or raise the base `viewport`. Never combine a frame with `output: {scale: 1}`. |
+| Encode never finishes / mp4 grows forever | A hand-written filtergraph missing `shortest=1` on `alphamerge` **and** `overlay`. The `-loop 1` stills never EOF, so the last frame repeats indefinitely. |
+| macOS header present but the app is cut off at the bottom | The header eats vertical room from the video, not from the padding. Lower `pad`, or drop `chrome`. |
+| Banding across the wallpaper in the gif only | 128-colour bayer. Framed exports already default to 256 + `sierra2_4a`; you overrode `colors` without overriding `dither`. |
+| Rounded corners have a hard/aliased edge | The mask is rendered at the video's exact pixel size; if you hand-rolled the graph, check `scale` matches the mask dimensions exactly — a mismatch resamples the alpha. |
 
 ## Scale and layout differences
 
