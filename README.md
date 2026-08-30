@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/icon.svg" alt="screenshooter icon" width="128"/>
+</p>
+
 # Screenshooter
 
 [![CI](https://github.com/Paldom/screenshooter/actions/workflows/ci.yml/badge.svg)](https://github.com/Paldom/screenshooter/actions/workflows/ci.yml)
