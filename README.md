@@ -65,11 +65,12 @@ The two skills compose into a workflow: storyboard → record → review. A
 paste-ready orchestration goal lives in [docs/setup-prompt.md](docs/setup-prompt.md).
 Try it instantly on the bundled demo app — no scenario writing needed:
 
-```bash
-bash skills/walkthrough-record/scripts/setup.sh   # once: pinned deps + Chromium (needs Node ≥ 20, ffmpeg)
-node skills/walkthrough-record/scripts/record.mjs \
-  skills/walkthrough-record/assets/demo/orbit-tour.yaml --out ./out
+```text
+/walkthrough-record the bundled Orbit demo scenario
 ```
+
+On first run the skill installs its own pinned dependencies and Chromium; the
+machine needs Node >= 20 and ffmpeg.
 
 The frame above is one `output.frame` block in the scenario — off by default,
 `background: auto` derives the wallpaper from the recorded app, `chrome: true`

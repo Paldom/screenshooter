@@ -7,6 +7,21 @@ versioning: [SemVer](https://semver.org) on the plugin manifest
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-31
+
+### Added
+- Adopted the current skillskit gate: executed trigger evals scoring every
+  trigger prompt against every skill description (rank-1 routing accuracy
+  82.1%), a security scan over skill content and bundled scripts, ruff lint and
+  format, README-shape validation, pre-commit hooks and a write-time lint hook.
+  The repo's own `selftest` target is kept and still runs inside `make check`.
+
+### Changed
+- README quick-start now shows the skills-level invocation instead of running
+  the skill's bundled `setup.sh` and `record.mjs` directly — those are
+  implementation detail a reader should never have to type.
+
+
 ## [0.2.0] — 2026-08-21
 
 ### Added
